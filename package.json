@@ -63,7 +63,11 @@
           "config": {
             "icon": "icons/icon.icns",
             "name": "filemaster",
-            "background": "icons/background.png"
+            "background": "icons/background.png",
+            "contents": [
+              { "x": 320, "y": 190, "type": "link", "path": "/Applications" },
+              { "x": 160, "y": 190, "type": "file", "path": "/Users/julian/Downloads/GitHub/filemaster/out/filemaster-darwin-x64/filemaster.app" }
+            ]
           }
         },
         {
