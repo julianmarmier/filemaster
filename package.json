@@ -1,12 +1,17 @@
 {
-  "name": "electron-quick-start",
+  "name": "filemaster",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/electron/electron-quick-start.git"
+  },
   "keywords": [
     "Electron",
     "quick",
@@ -17,6 +22,78 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^9.0.5"
+    "@electron-forge/cli": "^6.0.0-beta.52",
+    "@electron-forge/maker-deb": "^6.0.0-beta.52",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.52",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.52",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.52",
+    "@electron-forge/maker-zip": "^6.0.0-beta.52",
+    "electron": "^9.0.5",
+    "electron-reload": "^1.5.0"
+  },
+  "bugs": {
+    "url": "https://github.com/electron/electron-quick-start/issues"
+  },
+  "homepage": "https://github.com/electron/electron-quick-start#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "lodash": "^4.17.19",
+    "mousetrap": "^1.6.5"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "icons/icon.icns"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {
+            "options": {
+              "homepage": "https://filemaster.julianm.tk",
+              "icon": "icons/icon.png",
+              "name": "filemaster",
+              "genericName": "filemaster"
+            }
+          }
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "icon": "icons/icon.icns",
+            "name": "filemaster",
+            "background": "icons/background.png"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {
+            "options": {
+              "homepage": "https://filemaster.julianm.tk",
+              "icon": "icons/icon.png",
+              "name": "filemaster",
+              "genericName": "filemaster"
+            }
+          }
+        },
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "exe": "filemaster",
+            "iconUrl": "icons/icon.ico",
+            "setupIcon": "icons/icon.ico"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin",
+            "linux",
+            "windows"
+          ]
+        }
+      ]
+    }
   }
 }

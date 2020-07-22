@@ -1,0 +1,80 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.busy {
+  cursor: progress;
+}
+
+.link {
+  color: lightgray;
+  transition: color 0.2s;
+}
+.link:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.main {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+ul#fileList {
+  list-style-type: none;
+  width: 90%;
+  padding: 0;
+}
+
+ul#fileList li {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: lightgray;
+  padding: 10px 0;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+ul#fileList .remove:hover::after {
+  transition: 0.2s;
+  content: "Click to remove";
+  color: red;
+  padding-left: 5px;
+}
+
+ul#fileList p {
+  margin: 0 0 0 10px;
+  color: gray;
+  transition: opacity 0.2s;
+}
+
+ul#fileList span {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ebebeb;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+ul#fileList p:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#folderName {
+  font-weight: 600;
+  margin: 0 10px;
+}

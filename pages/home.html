@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="../css/master.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/all.css">
+    <title>filemaster</title>
+  </head>
+  <body>
+    <div class="title-bar" id="home-title"><p class="dir"></p> <p id="name"></p></div>
+    <div class="main-area">
+      <!-- modals -->
+      <div class="message" id="message">Message</div>
+
+      <!-- Animation classes -->
+      <div class="anim left-after" id="left-anim"></div>
+      <div class="anim right-after" id="right-anim"></div>
+      <div class="bottom-after" id="bottom-anim"></div>
+
+      <div class="left field" id="left-action"><span class="fas fa-trash"></span></div>
+      <div class="right field" id="right-action"><span class="fas fa-check"></span></div>
+      <div class="bottom" id="bottom-action"><span class="fas fa-folder"></span></div>
+      <div class="card" id="card">
+        <h3 id="fileName">File Name</h3>
+        <div class="twocol">
+          <p class="link" id="openButton"><span class="key">O</span> Open <span class="fas fa-external-link-alt"></span></p>
+          <p class="sep"> • </p>
+          <p id="fileSize">3GB</p>
+        </div>
+      </div>
+
+      <!-- Popup, after -->
+      <div class="card" id="finished">
+        <h3>All done!</h3>
+        <p>Press <span class="key auto">Enter ↩</span> to sort again, or <span class="key">F</span> to switch folders. <span></span> </p>
+      </div>
+
+      <ul id="allFolders">
+      </ul>
+    </div>
+    <script src="../libs/mousetrap.min.js" charset="utf-8"></script>
+    <script src="../renderers/home.js" charset="utf-8"></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes title-in {
+  0%: {transform: translateY(100px); opacity: 0}
+  50%: {transform: translateY(25px); opacity: 0.5}
+  100%: {transform: translateY(0px); opacity: 1}
+}
+
+.main-title {
+  animation-name: title-in;
+  animation-duration: 5s;
+  animation-timing-function: ease-out;
+  background: linear-gradient(0.25turn, #d962c4 0%, #7084ff 41%, #3afff3 100%);
+  background-position: center;
+  background-size: cover;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-size: 4rem;
+  margin: 10px 0;
+}
+
+.subtitle {
+  font-weight: 300;
+}
+
+.main {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
