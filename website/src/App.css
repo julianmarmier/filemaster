@@ -1,0 +1,46 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  background-color: #ebebeb;
+}
+
+.App-logo {
+  height: 20vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  padding-left: 30px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  margin: 10px 0;
+  font-size: 5em;
+  background: linear-gradient(0.25turn, #d962c4 0%, #7084ff 41%, #3afff3 100%);
+  background-position: center;
+  background-size: cover;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.App-link {
+  color: #61dafb;
+  padding: 10px;
+  background-color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.screenshot {
+  height: 100vmin;
+  resize: vertical;
+  margin-right: -500px;
+}
