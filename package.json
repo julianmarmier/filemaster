@@ -1,7 +1,7 @@
 {
   "name": "filemaster",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A mimimalistc file organizer",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,11 +13,10 @@
     "url": "git+https://github.com/electron/electron-quick-start.git"
   },
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "file",
+    "organization",
+    "utility",
+    "cross-platform"
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
@@ -42,72 +41,6 @@
     "mousetrap": "^1.6.5"
   },
   "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "icons/icon.icns"
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {
-            "options": {
-              "homepage": "https://filemaster.julianm.tk",
-              "icon": "icons/icon.png",
-              "name": "filemaster",
-              "genericName": "filemaster"
-            }
-          }
-        },
-        {
-          "name": "@electron-forge/maker-dmg",
-          "config": {
-            "icon": "icons/icon.icns",
-            "name": "filemaster",
-            "background": "icons/background.png",
-            "contents": [
-              {
-                "x": 400,
-                "y": 200,
-                "type": "link",
-                "path": "/Applications"
-              },
-              {
-                "x": 150,
-                "y": 200,
-                "type": "file",
-                "path": "/Users/julian/Downloads/GitHub/filemaster/out/filemaster-darwin-x64/filemaster.app"
-              }
-            ]
-          }
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {
-            "options": {
-              "homepage": "https://filemaster.julianm.tk",
-              "icon": "icons/icon.png",
-              "name": "filemaster",
-              "genericName": "filemaster"
-            }
-          }
-        },
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "exe": "filemaster",
-            "iconUrl": "icons/icon.ico",
-            "setupIcon": "icons/icon.ico"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin",
-            "linux",
-            "windows"
-          ]
-        }
-      ]
-    }
+    "forge": "./forge.config.js"
   }
 }

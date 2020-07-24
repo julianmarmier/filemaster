@@ -21,16 +21,13 @@ code {
 }
 
 .name a {
+  color: #0394fc;
   text-decoration: none;
   border-bottom: solid 1px;
-  background-position: 0 100%;
-  background-size: 4px 4px;
-  background: linear-gradient(to bottom, gray 0%, gray 100%);
-  background-repeat: repeat-x;
-  transition: background-size 0.2s;
+  transition: border 0.1s, background-color 0.2s;
 }
 
 .name a:hover {
-  background-size: 4px 25px;
-  color: blue;
+  border-bottom-width: 2px;
+  background-color: #0394fc33;
 }

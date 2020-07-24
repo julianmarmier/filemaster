@@ -26,17 +26,24 @@ h1 {
   background-position: center;
   background-size: cover;
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
 
 .App-link {
-  color: #61dafb;
+  color: white;
   padding: 10px;
-  background-color: white;
+  background: linear-gradient(0.1turn, #d962c4 0%, #7084ff 100%);
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
+  transition: 0.5s;
+  background-size: 200% auto;
+}
+
+.App-link:hover {
+  background-position: right center;
 }
 
 .screenshot {
