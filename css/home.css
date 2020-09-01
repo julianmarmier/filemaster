@@ -84,9 +84,31 @@ h3 {
   display: none;
 }
 
+.action-bar {
+  position: absolute;
+  right: 0;
+}
+
+.action-bar ul {
+  list-style-type: none;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.action-bar li {
+  transition: color 0.2s;
+  padding: 10px;
+  color: gray;
+  cursor: pointer;
+}
+
+.action-bar li:hover {
+  color: black;
+}
+
 /* ------- */
 
-#home-title {
+.title-bar {
   text-align: center;
   padding-top: 10px;
   display: flex;
@@ -95,8 +117,16 @@ h3 {
   justify-content: center;
 }
 
+#home-title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
 #home-title .dir {
   color: #aaa;
+  width: auto;
 }
 
 #home-title #name:hover {
@@ -235,6 +265,7 @@ h3 {
 .main-area {
   height: 100%;
   display: flex;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
   align-content: center;
@@ -267,6 +298,10 @@ h3 {
 
 #allFolders.click {
   bottom: 0;
+}
+
+.thumbnail.click {
+  visibility: hidden;
 }
 
 /* ----- */

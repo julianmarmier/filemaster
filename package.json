@@ -37,8 +37,11 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
     "electron-squirrel-startup": "^1.0.0",
+    "file-type": "^14.7.0",
+    "istextorbinary": "^5.8.0",
     "lodash": "^4.17.19",
-    "mousetrap": "^1.6.5"
+    "mousetrap": "^1.6.5",
+    "read-chunk": "^3.2.0"
   },
   "config": {
     "forge": "./forge.config.js"

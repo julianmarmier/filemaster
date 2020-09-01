@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["startClick", "folderClick", "continue", "registerShortcuts", "openPath", "fileUpdate", "openSettings"];
+            let validChannels = ["startClick", "folderClick", "continue", "openPath", "fileUpdate", "openSettings", "prefsChange", "undo"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }

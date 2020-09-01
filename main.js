@@ -4,13 +4,16 @@ const path = require('path')
 const fs = require('fs')
 const Store = require('./store.js')
 
+const FileType = require('file-type')
+const readChunk = require('read-chunk')
+
 var mainWindow, fileDirectory;
 
-// TESTING
-// require('electron-reload')(__dirname, {
-//   electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
-//   hardResetMethod: 'exit'
-// });
+//  TESTING
+require('electron-reload')(__dirname, {
+  electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+  hardResetMethod: 'exit'
+});
 
 // "*" means that the variable is unitialized
 
@@ -19,30 +22,64 @@ const store = new Store({
   defaults: {
     mainFolder: "*",
     favoriteFolders: [],
-    finishedSetup: false
+    finishedSetup: false,
+    showInstructions: true
+  }
+})
+
+const actionList = new Store({
+  configName: "action-log",
+  defaults: {
+    userActions: [],
+    undoActions: [],
+    trashActions: []
   }
 })
 
 function readNextFile(e, fileAction, previousFile, previousFolder) {
-  // prevFolder is only required if fileAction is of type "switch"
+  // previousFolder is only required if fileAction is of type "switch"
+  // this function needs to handle two cases: A). new user action, B). undo/redo actions.
+  // if there are still objects left in the undoActions
+
   let looping = true
   const folderDir = store.get('mainFolder');
-  while (looping) {
-    const entry = fileDirectory.readSync()
-    if (entry === null) {
-      // no more files… null!
-      e.reply("fileResponse", {action: "finished"});
-      looping = false;
-    } else if (entry.isFile()) {
-      const filePath = path.join(folderDir, entry.name);
-      const fileSize = fs.statSync(filePath).size;
-      // another if…else - check if there is a previousFolder
-      if (previousFolder) {
-        e.reply("fileResponse", {file: entry, size: fileSize, path: filePath, action: fileAction, prevFile: previousFile, prevFolder: previousFolder});
-      } else {
-        e.reply("fileResponse", {file: entry, size: fileSize, path: filePath, action: fileAction, prevFile: previousFile});
+  if (actionList.get("undoActions").length > 0) {
+    // if there are still objects left in the temporary list, return those.
+    // get last temp list items
+    const temp = actionList.pop("undoActions");
+    e.reply("fileResponse", {...temp, action: fileAction});
+  } else {
+    while (looping) {
+      const entry = fileDirectory.readSync()
+      if (entry === null) {
+        // no more files… null!
+        fileDirectory.closeSync();
+        e.reply("fileResponse", {action: "finished"});
+        looping = false;
+      } else if (entry.isFile()) {
+        // load the file as a buffer
+        const filePath = path.join(folderDir, entry.name);
+        const fileBuffer = readChunk.sync(filePath, 0, 4100);
+        const fileData = {}
+
+        // use file-type to determine the MIME type, then handle from there.
+        const currentFileType = FileType.fromBuffer(fileBuffer);
+        const mimeType = /\w*(?=\/)/g.exec(currentFileType);
+
+        if (mimeType === text) {
+          // this is text, should return the buffer
+          fileData = {type: "text", buffer: fileBuffer.toString()}
+        }
+
+        const fileSize = fs.statSync(filePath).size;
+        // another if…else - check if there is a previousFolder
+        if (previousFolder) {
+          e.reply("fileResponse", {file: entry.name, data: fileData, size: fileSize, path: filePath, action: fileAction, prevFile: previousFile, prevFolder: previousFolder});
+        } else {
+          e.reply("fileResponse", {file: entry.name, data: fileData, size: fileSize, path: filePath, action: fileAction, prevFile: previousFile});
+        }
+        looping = false;
       }
-      looping = false;
     }
   }
 }
@@ -58,18 +95,21 @@ ipcMain.on("fileUpdate", (event, arg) => {
       })
       break;
     case "keep":
+      actionList.pushAction("userActions", "KEEP", arg.path);
       readNextFile(event, "keep", path.basename(arg.path));
       // return the next file from the list
       break;
     case "switch":
       // send currentFile to arg.folderPath using
-      const finalPath = path.join(arg.folder, path.basename(arg.path))
+      const finalPath = path.join(arg.folder, path.basename(arg.path));
+      actionList.pushAction("userActions", "MOVE", arg.path, finalPath);
       fs.renameSync(arg.path, finalPath);
       readNextFile(event, "switch", path.basename(arg.path), path.basename(arg.folder));
       break;
     case "remove":
     // use current folder path given
-      shell.moveItemToTrash(arg.path, true)
+      actionList.push("trashActions", arg.path);
+      actionList.pushAction("userActions", "REMOVE", arg.path)
       readNextFile(event, "remove", path.basename(arg.path));
       break;
   }
@@ -116,7 +156,7 @@ ipcMain.on("folderClick", (event, arg) => {
           retList.push({fpath: folder, name: path.basename(folder)});
         });
 
-        const result = {folderDir: path.dirname(store.get("mainFolder")) + path.sep, mainFolder: path.basename(store.get("mainFolder")), favoriteFolders: retList}
+        const result = {folderDir: path.dirname(store.get("mainFolder")) + path.sep, mainFolder: path.basename(store.get("mainFolder")), favoriteFolders: retList, showInstructions: store.get("showInstructions")}
         event.reply("loadList", result)
         break;
       case "remove":
@@ -139,6 +179,24 @@ ipcMain.on("openPath", (event, link) => {
 
 ipcMain.on("openSettings", () => {
   updateWindow(800, 600, "choose")
+})
+
+ipcMain.on("prefsChange", (event, arg) => {
+  store.set(arg.key, arg.value)
+})
+
+ipcMain.on("undo", (event) => {
+  if (actionList.get("userActions").length > 0) {
+    const lastAction = actionList.pop("userActions");
+    const newAction = lastAction.undo();
+
+    if (lastAction.type === "REMOVE") {
+      actionList.pull("trashActions", lastAction.path)
+    }
+
+    actionList.push("undoActions", newAction);
+    readNextFile(event, "restore", path.basename(lastAction.name));
+  }
 })
 
 function onStart() {
@@ -193,6 +251,16 @@ app.whenReady().then(() => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow(500, 500)
+  })
+
+  app.on('will-quit', function () {
+    // delete temporary action files to save space
+    // delete all items in actionList
+    actionList.get("trashActions").forEach((fpath) => {
+        shell.moveItemToTrash(fpath, true)
+    });
+
+    shell.moveItemToTrash(path.join(app.getPath("userData"), "action-log.json"));
   })
 })
 

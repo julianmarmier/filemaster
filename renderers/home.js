@@ -1,14 +1,16 @@
 // let's start by loading everything into our DOM.
-var titleInfo = document.getElementById("home-title"), folderButton = document.getElementById("name"), folderList = document.getElementById("allFolders");
+var titleInfo = document.getElementById("home-title"), folderButton = document.getElementById("name"), folderList = document.getElementById("allFolders"), undoButton = document.getElementById("undo-button");
 var bottom = document.getElementById("bottom-action"), left = document.getElementById("left-action"), right = document.getElementById("right-action"), card = document.getElementById("card");
 var leftAnimator = document.getElementById("left-anim"), rightAnimator = document.getElementById("right-anim"), bottomAnimator = document.getElementById("bottom-anim");
 var userMessage = document.getElementById("message");
 
 // card stuff
-var cardFileName = document.getElementById("fileName"), cardFileSize = document.getElementById("fileSize"), cardOpenButton = document.getElementById("openButton"), finishCard = document.getElementById("finished");
+var cardFileName = document.getElementById("fileName"), cardFileSize = document.getElementById("fileSize"), cardOpenButton = document.getElementById("openButton"), finishCard = document.getElementById("finished"), thumbnail = document.getElementById("thumbnail-area");
 var currentFolderPath;
 
-const changeFields = [bottom, left, right, folderList, card];
+var modal = document.getElementById("infoModal"), modalWrapper = document.getElementById("infoWrapper"), instructionsCheck = document.getElementById("instructions-prefs");
+
+const changeFields = [bottom, left, right, folderList, card, thumbnail];
 var foldersActive = false;
 
 // Bind keys to actions: beginning
@@ -63,16 +65,38 @@ function animateSuccess(messageType, fileName, newFolder) {
       });
       foldersActive = false;
       break;
+    case "restore":
+      userMessage.innerHTML = `<span class="fas fa-restore"></span> Restored ${fileName}`;
+      break;
   }
 
   userMessage.classList.add("animated");
   animator.classList.add("animated");
 
   window.setTimeout(() => {
-    animator.classList.remove("animated");
     userMessage.classList.remove("animated");
   }, 2500)
 
+  window.setTimeout(() => {
+    animator.classList.remove("animated");
+  }, 1000)
+
+}
+
+function showModal(modalType) {
+  modalWrapper.classList.add("modal-visible");
+  modal.classList.add("modal-visible");
+}
+
+function hideModal(modalType) {
+  if (modalType === "instructions") {
+    if (instructionsCheck.checked) {
+        window.api.send("prefsChange", {"key": "showInstructions", "value": false})
+    }
+  }
+
+  modalWrapper.classList.remove("modal-visible");
+  modal.classList.remove("modal-visible");
 }
 
 window.api.send("folderClick", {
@@ -104,7 +128,7 @@ window.api.receive("fileResponse", (res) => {
     })
 
   } else {
-    fileName.innerText = res.file.name;
+    fileName.innerText = res.file;
     fileSize.innerText = formatBytes(res.size)
     currentFolderPath = res.path;
     Mousetrap.bind("o", () => {openPath(res.path)})
@@ -122,11 +146,18 @@ window.api.receive("fileResponse", (res) => {
 
 window.api.receive("loadList", (data) => {
   // data: favoriteFolders, mainFolder, folderDir
-  folderData = data; // not sure why I need this, I think I meant to load all the files into this.
+  // folderData = data; // not sure why I need this, I think I meant to load all the files into this.
   let i = 0;
   for (const text of [data.folderDir, data.mainFolder]) {
       titleInfo.children[i].innerText = text;
       i++;
+  }
+
+  if(data.showInstructions) {
+    showModal("instructions");
+    Mousetrap.bind("enter", () => {
+      hideModal("instructions")
+    });
   }
 
   data.favoriteFolders.forEach((folder, i) => {
@@ -184,4 +215,8 @@ bottom.addEventListener('click', () => {
 folderButton.addEventListener('click', () => {
   // go back to settings page.
   window.api.send("openSettings");
+})
+
+undoButton.addEventListener('click', () => {
+  window.api.send("undo");
 })

@@ -10,7 +10,17 @@
     <title>filemaster</title>
   </head>
   <body>
-    <div class="title-bar" id="home-title"><p class="dir"></p> <p id="name"></p></div>
+    <div class="title-bar">
+      <!-- Undo/Redo buttons on left, dirname in middle, and settings on right -->
+      <div id="home-title"><p class="dir"></p><p id="name"></p></div>
+      <div class="action-bar">
+        <ul>
+          <li id="undo-button"><span class="fas fa-undo"></span></li>
+          <!-- Keep this out for now <li><span class="fas fa-redo"></span></li> -->
+          <li><span class="fas fa-cog"></span></li>
+        </ul>
+      </div>
+    </div>
     <div class="main-area">
       <!-- modals -->
       <div class="message" id="message">Message</div>
@@ -23,6 +33,11 @@
       <div class="left field" id="left-action"><span class="fas fa-trash"></span></div>
       <div class="right field" id="right-action"><span class="fas fa-check"></span></div>
       <div class="bottom" id="bottom-action"><span class="fas fa-folder"></span></div>
+
+      <div class="thumbnail" id="thumbnail-area">
+        <h3>image</h3>
+      </div>
+
       <div class="card" id="card">
         <h3 id="fileName">File Name</h3>
         <div class="twocol">
@@ -38,6 +53,22 @@
         <p>Press <span class="key auto">Enter ↩</span> to sort again, or <span class="key">F</span> to switch folders. <span></span> </p>
       </div>
 
+      <!-- Popup/modal, instructions or settings (dynamically change content.) -->
+      <div class="modal-wrapper" id="infoWrapper">
+        <div class="modal" id="infoModal">
+            <h2>Instructions</h2>
+            <ul>
+              <li>Click <span class="fas fa-trash"></span> or press <span class="key">←</span> to <b>delete</b> the current file</li>
+              <li>Click <span class="fas fa-check"></span> or press <span class="key">→</span> to <b>keep</b> the current file</li>
+              <li>Click <span class="fas fa-folder"></span> or press <span class="key">↓</span> to <b>move</b> the current file to one of the folders</li>
+            </ul>
+            <!-- if instructions-prefs.value === "on" -->
+            <input type="checkbox" id="instructions-prefs" name="instructions-prefs">
+            <label for="instructions-prefs">Don't show these instructions again.</label>
+        </div>
+      </div>
+
+      <!-- List of folders -->
       <ul id="allFolders">
       </ul>
     </div>

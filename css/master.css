@@ -78,3 +78,44 @@ button:active {
 .key.auto {
   width: auto;
 }
+
+.modal {
+  opacity: 0;
+  width: 70vw;
+  padding: 5px 10px;
+  position: absolute;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.5s;
+}
+
+.modal::after {
+  content: 'press enter ⏎ to continue';
+  position: absolute;
+  width: auto;
+  background-color: #ebebeb;
+  right: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  bottom: -15px;
+  font-weight: 600;
+  color: darkgray;
+}
+
+.modal-wrapper {
+  visibility: hidden;
+  transition: visibility 0.2s;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-visible {
+  opacity: 1;
+  visibility: visible;
+}
