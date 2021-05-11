@@ -39,7 +39,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "file-type": "^14.7.0",
     "istextorbinary": "^5.8.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mousetrap": "^1.6.5",
     "read-chunk": "^3.2.0"
   },
